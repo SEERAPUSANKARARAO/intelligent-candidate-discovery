@@ -1,0 +1,20 @@
+# ── Core: everything the DEFAULT ranking step + tests + demo need ────────────
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.3
+faker>=28.0            # synthetic data generation only
+fastapi>=0.115,<1.0   # demo / sandbox API
+uvicorn[standard]>=0.30
+pydantic>=2.7,<3.0
+pytest>=8.0
+streamlit>=1.30       # Streamlit sandbox (challenge/app.py)
+pandas>=2.0           # tables in the Streamlit sandbox
+
+# ── Optional depth (opt-in flags; NOT needed for the default submission) ──────
+# The default `python rank.py` uses only numpy/scipy/scikit-learn (TF-IDF + BM25).
+# These enable --embeddings (BGE), --ltr (LambdaMART), --rerank (cross-encoder).
+# Vendor model weights offline first (see challenge/README.md).
+# sentence-transformers>=3.0
+# torch>=2.2            # CPU build: --index-url https://download.pytorch.org/whl/cpu
+# lightgbm>=4.0
+# faiss-cpu>=1.8

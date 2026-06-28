@@ -1,0 +1,59 @@
+# Redrob Hackathon — Submission Metadata
+team_name: "<<your-team-name>>"          # <-- set your registered team/participant name
+
+primary_contact:
+  name: "Seerapu Sankara Rao"
+  email: "seerapusankar5@gmail.com"
+  phone: "7732085297"
+
+
+# ── Code and reproducibility ─────────────────────────────────────────────────
+github_repo: "https://github.com/SEERAPUSANKARARAO/intelligent-candidate-discovery"
+sandbox_link: "<<https://huggingface.co/spaces/USERNAME/redrob-ranker  (or Streamlit Cloud / docker run)>>"
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+# ── Compute environment ──────────────────────────────────────────────────────
+compute:
+  platform: "Linux x86_64 (CPU)"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Ubuntu 22.04 / Debian slim (Docker)"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false          # default pipeline needs NO pre-computation
+  pre_computation_time_minutes: 0          # (optional BGE/LTR artifacts are pre-built offline if used)
+
+# ── AI tools declaration (honest; not penalised) ─────────────────────────────
+ai_tools_used:
+  - "Claude"
+ai_usage_summary: |
+  Used Claude (Claude Code) for architecture discussion, code review, and drafting.
+  All engineering decisions, the funnel design, the trust/honeypot logic and the
+  evaluation harness were authored and verified by the team. No candidate data was
+  sent to any hosted LLM; the ranking pipeline makes zero network calls.
+
+# ── Approach summary (≤200 words) ────────────────────────────────────────────
+methodology_summary: |
+  A transparent, offline 4-stage funnel. Stage 1 streams all 100k candidates and
+  computes a trust-aware STRUCTURED pre-score (skills weighted by endorsement/
+  duration/proficiency consistency, career trajectory, experience) so keyword
+  density never drives recall — keyword-stuffers and honeypots cannot crowd the
+  shortlist. Stage 2 keeps the top ~2,000. Stage 3 reranks them with hybrid BM25 +
+  semantic (TF-IDF by default; optional precomputed BGE). Stage 4 fuses the signals,
+  applies a behavioural multiplier from the 23 Redrob signals, penalises the JD's
+  explicit disqualifiers (services-only, research-only, framework-only, job-hopping),
+  rescues plain-language Tier-5 product builders, and floors honeypots out of the
+  top-100. Every pick ships an evidence-cited, hallucination-checked reason. We built
+  a labelled synthetic harness (real schema, tiers 0-5, all four trap types) to
+  measure the official composite locally and an adversarial honeypot loop to probe
+  the detector. Runs in ~80s on CPU, <2.5 GB, fully offline. Optional LambdaMART
+  (NDCG-optimised) and cross-encoder reranking are provided as opt-in refinements.
+
+# ── Declarations ─────────────────────────────────────────────────────────────
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

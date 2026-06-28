@@ -1,0 +1,5 @@
+# Minimal dependencies for the DEFAULT ranking step only (Stage-3 Docker reproduction).
+# `python rank.py --candidates candidates.jsonl --out submission.csv` needs just these.
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.3
