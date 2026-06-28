@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# ── Provided dataset (organizers supply candidates.jsonl; judges drop it into data/) ──
+# NB: brackets are glob char-classes in gitignore, so match the bundle by wildcard.
+data/candidates.jsonl
+data/*India_runs_data_and_ai_challenge*
+data/__MACOSX/
+data/candidates.json
+data/jobs.json
+
+# ── Generated data (regenerate with `python -m challenge.synth`) ──
+data/synth/
+data/synth20k/
+data/synth100k/
+data/demo_candidates.jsonl
+data/feedback.json
+
+# ── Vendored model weights + precomputed artifacts (optional depth) ──
+# Regenerate: challenge.embed_index / challenge.ltr, and vendor weights per challenge/README.md.
+# (If you want to ship them, use git-lfs.)
+challenge/models/
+challenge/artifacts/
+
+# ── Build outputs ──
+submission_100k.csv
+submission_bge.csv
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
