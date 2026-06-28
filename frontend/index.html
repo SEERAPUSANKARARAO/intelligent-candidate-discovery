@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redrob · Talent Intelligence</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <!-- ░░ Top bar ░░ -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">R</div>
+      <div>
+        <div class="brand-title">Redrob <span>Talent Intelligence</span></div>
+        <div class="brand-sub">Intelligent Candidate Discovery &amp; Ranking</div>
+      </div>
+    </div>
+    <div class="role-chip" id="roleChip">
+      <span class="dot"></span> Ranking for <strong id="roleTitle">…</strong>
+    </div>
+    <div class="stat-tiles" id="statTiles"></div>
+  </header>
+
+  <div class="layout">
+    <!-- ░░ Sidebar controls ░░ -->
+    <aside class="sidebar">
+      <div class="panel">
+        <div class="panel-h">
+          <h3>Signal weights</h3>
+          <button class="link" id="resetWeights">reset</button>
+        </div>
+        <div class="sliders" id="sliders"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Pipeline</h3>
+        <label class="switch"><input type="checkbox" id="t_semantic" checked><span class="track"></span>Semantic rerank (hybrid)</label>
+        <label class="switch"><input type="checkbox" id="t_behavioral" checked><span class="track"></span>Behavioural signals</label>
+        <label class="switch"><input type="checkbox" id="t_honeypot" checked><span class="track"></span>Honeypot defence</label>
+      </div>
+
+      <div class="panel">
+        <h3>View</h3>
+        <div class="field">
+          <label>Shortlist size</label>
+          <select id="topn">
+            <option>10</option><option selected>20</option><option>50</option><option>100</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Search</label>
+          <input type="text" id="search" placeholder="name, title or skill…" />
+        </div>
+        <button class="btn ghost" id="trapsBtn">🛡 Traps caught</button>
+      </div>
+
+      <div class="panel jd">
+        <div class="panel-h">
+          <h3>Job description</h3>
+          <button class="link" id="jdToggle">show</button>
+        </div>
+        <div class="jd-body" id="jdBody" hidden></div>
+      </div>
+    </aside>
+
+    <!-- ░░ Results ░░ -->
+    <main class="results">
+      <div class="results-h">
+        <h2>Ranked shortlist</h2>
+        <div class="results-meta" id="resultsMeta"></div>
+      </div>
+      <div id="cards" class="cards"></div>
+    </main>
+  </div>
+
+  <!-- ░░ Candidate drawer ░░ -->
+  <div class="drawer-scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" hidden></aside>
+
+  <!-- ░░ Traps modal ░░ -->
+  <div class="modal-scrim" id="modalScrim" hidden>
+    <div class="modal" id="trapsModal"></div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
