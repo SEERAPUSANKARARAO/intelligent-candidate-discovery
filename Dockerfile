@@ -1,24 +1,21 @@
-# Stage-3 reproduction image: runs the DEFAULT ranking step under the contest
-# constraints (CPU-only, offline at runtime, ≤5 min, ≤16 GB). Build once (this is
-# the only step that touches the network); run with no network.
+# HuggingFace Space (Docker SDK) — serves the FastAPI product UI on port 7860.
+# (For the offline Stage-3 ranking image, use Dockerfile.rank instead.)
 #
-#   docker build -t redrob-ranker .
-#   docker run --rm --network none -m 16g \
-#       -v "$PWD/data:/data" redrob-ranker \
-#       --candidates /data/candidates.jsonl --out /data/submission.csv
+#   docker build -t redrob-ui . && docker run --rm -p 7860:7860 redrob-ui
 #
 FROM python:3.11-slim
-
 WORKDIR /app
-ENV PYTHONUNBUFFERED=1 OMP_NUM_THREADS=8 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+ENV PYTHONUNBUFFERED=1 OMP_NUM_THREADS=4 \
+    HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 \
+    DEMO_DATA=/app/data/demo_candidates.jsonl
 
-# minimal deps for the default (TF-IDF + BM25 + structured) pipeline
-COPY requirements-rank.txt .
-RUN pip install --no-cache-dir -r requirements-rank.txt
+# Lean deps for the FastAPI UI (no torch/streamlit needed for the product UI)
+RUN pip install --no-cache-dir numpy scipy scikit-learn fastapi "uvicorn[standard]" pydantic
 
-# engine + entrypoint (no data baked in — mount it at run time)
 COPY challenge/ challenge/
-COPY rank.py .
+COPY backend/ backend/
+COPY frontend/ frontend/
+COPY data/demo_candidates.jsonl data/sample_candidates.jsonl data/
 
-ENTRYPOINT ["python", "rank.py"]
-CMD ["--candidates", "/data/candidates.jsonl", "--out", "/data/submission.csv"]
+EXPOSE 7860
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]

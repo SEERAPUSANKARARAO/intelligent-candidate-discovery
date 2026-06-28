@@ -17,8 +17,9 @@ data/jobs.json
 data/synth/
 data/synth20k/
 data/synth100k/
-data/demo_candidates.jsonl
 data/feedback.json
+# NB: data/demo_candidates.jsonl IS committed — it's the curated demo pool the
+# sandbox/Space ranks (subset of the public bundle: top picks + honeypots + stuffers).
 
 # ── Vendored model weights + precomputed artifacts (optional depth) ──
 # Regenerate: challenge.embed_index / challenge.ltr, and vendor weights per challenge/README.md.

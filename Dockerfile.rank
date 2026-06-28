@@ -1,0 +1,21 @@
+# Offline ranking image (Stage-3 reproduction): runs the DEFAULT ranking step under
+# the contest constraints (CPU-only, offline at runtime, ≤5 min, ≤16 GB). Build once
+# (the only step that touches the network); run with no network.
+#
+#   docker build -f Dockerfile.rank -t redrob-ranker .
+#   docker run --rm --network none -m 16g \
+#       -v "$PWD/data:/data" redrob-ranker \
+#       --candidates /data/candidates.jsonl --out /data/submission.csv
+#
+FROM python:3.11-slim
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1 OMP_NUM_THREADS=8 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
+
+COPY requirements-rank.txt .
+RUN pip install --no-cache-dir -r requirements-rank.txt
+
+COPY challenge/ challenge/
+COPY rank.py .
+
+ENTRYPOINT ["python", "rank.py"]
+CMD ["--candidates", "/data/candidates.jsonl", "--out", "/data/submission.csv"]

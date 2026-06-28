@@ -1,4 +1,17 @@
+---
+title: Intelligent Candidate Discovery
+emoji: 🎯
+colorFrom: indigo
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Redrob · Intelligent Candidate Discovery (India Runs — Track 1)
+
+> The header block above is HuggingFace Space config (used only when deployed as a
+> Docker Space); it is harmless on GitHub.
 
 Rank the **top-100** candidates for *Senior AI Engineer (Founding Team)* at Redrob AI
 from a **100,000-row** `candidates.jsonl` — **offline, CPU-only, ~80 s, <2.5 GB,
@@ -51,11 +64,25 @@ python rank.py --candidates data/candidates.jsonl --out submission.csv --embeddi
 ```
 The shipped default is the interpretable fusion (no overfit); these are measured refinements.
 
-### Docker (Stage-3 reproduction, offline)
+### Docker
 ```bash
-docker build -t redrob-ranker .
+# Offline ranking (Stage-3 reproduction):
+docker build -f Dockerfile.rank -t redrob-ranker .
 docker run --rm --network none -m 16g -v "$PWD/data:/data" redrob-ranker \
     --candidates /data/candidates.jsonl --out /data/submission.csv
+
+# Product UI / sandbox (also the HuggingFace Space image):
+docker build -t redrob-ui . && docker run --rm -p 7860:7860 redrob-ui   # → http://localhost:7860
+```
+
+### Deploy the sandbox on HuggingFace Spaces
+Create a **Docker** Space, then push this repo to it (the `Dockerfile` + the README
+front-matter make it serve the UI on port 7860 automatically):
+```bash
+pip install -U huggingface_hub && huggingface-cli login
+huggingface-cli repo create intelligent-candidate-discovery --type space --space_sdk docker
+git remote add space https://huggingface.co/spaces/<HF_USER>/intelligent-candidate-discovery
+git push space main
 ```
 
 ---
