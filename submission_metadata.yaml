@@ -9,7 +9,7 @@ primary_contact:
 
 # ── Code and reproducibility ─────────────────────────────────────────────────
 github_repo: "https://github.com/SEERAPUSANKARARAO/intelligent-candidate-discovery"
-sandbox_link: "<<https://huggingface.co/spaces/USERNAME/redrob-ranker  (or Streamlit Cloud / docker run)>>"
+sandbox_link: "https://huggingface.co/spaces/sankar126/intelligent-candidate-discovery"
 reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
 
 # ── Compute environment ──────────────────────────────────────────────────────
